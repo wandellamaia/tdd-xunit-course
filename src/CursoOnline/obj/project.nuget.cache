@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "FlrURHZc1GNu/yeLkYlcHoLQpjP6VeHtkHSolzReG4XHKNXdUQAyXh4vBt5oeizT9bivdcezGvtDcZNbyab4dw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\DTI Digital\\Documents\\Cursos\\CusroTDD\\tdd-xunit-course\\src\\CursoOnline\\CursoOnline.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\DTI Digital\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
+  ],
+  "logs": []
+}
