@@ -1,4 +1,5 @@
 using ExpectedObjects;
+using System;
 using Xunit;
 
 namespace CursoOnlineTest
@@ -11,9 +12,9 @@ namespace CursoOnlineTest
             var cursoEsperado = new
             {
                 Nome = "Ciência da Computação",
-                CargaHoraria = 460,
+                CargaHoraria = (double)460,
                 PublicoAlvo = PublicoAlvo.Estudante,
-                Valor = 1500,
+                Valor = (double)1500,
             };
            
 
@@ -22,14 +23,54 @@ namespace CursoOnlineTest
                                   cursoEsperado.PublicoAlvo,
                                   cursoEsperado.Valor);
 
-            Assert.Equal(curso.Nome, cursoEsperado.Nome);
-            Assert.Equal(curso.CargaHoraria, cursoEsperado.CargaHoraria);
-            Assert.Equal(curso.PublicoAlvo, cursoEsperado.PublicoAlvo);
-            Assert.Equal(curso.Valor, cursoEsperado.Valor);
+            cursoEsperado.ToExpectedObject().ShouldMatch(curso);
 
         }
 
-        
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        public void NaoDeveTerCargaHorariaMenorQue1(double cargaHorariaInvalida)
+        {
+            var cursoEsperado = new
+            {
+                Nome = "Ciência da Computação",
+                CargaHoraria = (double)80,
+                PublicoAlvo = PublicoAlvo.Estudante,
+                Valor = (double)1500,
+            };
+
+
+            var curso = new Curso(cursoEsperado.Nome,
+                                  cursoEsperado.CargaHoraria,
+                                  cursoEsperado.PublicoAlvo,
+                                  cursoEsperado.Valor);
+
+            Assert.Throws<ArgumentException>(() => new Curso(cursoEsperado.Nome,
+                                  cargaHorariaInvalida,
+                                  cursoEsperado.PublicoAlvo,
+                                  cursoEsperado.Valor));
+
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void CursoNaoDeveTerNomeVazio(string nomeInvalido)
+        {
+            var cursoEsperado = new
+            {
+                Nome = "Ciência da Computação",
+                CargaHoraria = 460,
+                PublicoAlvo = PublicoAlvo.Estudante,
+                Valor = 1500,
+            };
+
+            Assert.Throws<ArgumentException>(() => new Curso(nomeInvalido,
+                                  cursoEsperado.CargaHoraria,
+                                  cursoEsperado.PublicoAlvo,
+                                  cursoEsperado.Valor));
+        }
     }
     public enum PublicoAlvo
     {
@@ -42,7 +83,12 @@ namespace CursoOnlineTest
         {
             public Curso(string nome, double cargaHoraria, PublicoAlvo publicoAlvo, double valor1)
             {
-                Nome = nome;
+                if (string.IsNullOrEmpty(nome))
+                    throw new ArgumentException();
+                if (cargaHoraria < 1)
+                    throw new ArgumentException();
+
+            Nome = nome;
                 CargaHoraria = cargaHoraria;
                 PublicoAlvo = publicoAlvo;
                 Valor = valor1;
