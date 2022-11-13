@@ -88,7 +88,7 @@ namespace CursoOnlineTest
                 if (cargaHoraria < 1)
                     throw new ArgumentException();
 
-            Nome = nome;
+                Nome = nome;
                 CargaHoraria = cargaHoraria;
                 PublicoAlvo = publicoAlvo;
                 Valor = valor1;
