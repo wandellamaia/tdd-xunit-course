@@ -46,11 +46,13 @@ namespace CursoOnlineTest
                                   cursoEsperado.PublicoAlvo,
                                   cursoEsperado.Valor);
 
-            Assert.Throws<ArgumentException>(() => new Curso(cursoEsperado.Nome,
+          
+            string message = Assert.Throws<ArgumentException>(() => new Curso(cursoEsperado.Nome,
                                   cargaHorariaInvalida,
                                   cursoEsperado.PublicoAlvo,
-                                  cursoEsperado.Valor));
+                                  cursoEsperado.Valor)).Message;
 
+            Assert.Equal("Carga horária inválida", message);
         }
 
         [Theory]
@@ -66,10 +68,12 @@ namespace CursoOnlineTest
                 Valor = 1500,
             };
 
-            Assert.Throws<ArgumentException>(() => new Curso(nomeInvalido,
+            string message = Assert.Throws<ArgumentException>(() => new Curso(nomeInvalido,
                                   cursoEsperado.CargaHoraria,
                                   cursoEsperado.PublicoAlvo,
-                                  cursoEsperado.Valor));
+                                  cursoEsperado.Valor)).Message;
+
+            Assert.Equal("Nome inválido", message);
         }
     }
     public enum PublicoAlvo
@@ -81,17 +85,19 @@ namespace CursoOnlineTest
     }
     public class Curso
         {
-            public Curso(string nome, double cargaHoraria, PublicoAlvo publicoAlvo, double valor1)
+            public Curso(string nome, double cargaHoraria, PublicoAlvo publicoAlvo, double valor)
             {
                 if (string.IsNullOrEmpty(nome))
-                    throw new ArgumentException();
+                    throw new ArgumentException("Nome inválido");
                 if (cargaHoraria < 1)
-                    throw new ArgumentException();
+                    throw new ArgumentException("Carga horária inválida");
+                if (valor < 1)
+                    throw new ArgumentException("Valor inválida");
 
                 Nome = nome;
                 CargaHoraria = cargaHoraria;
                 PublicoAlvo = publicoAlvo;
-                Valor = valor1;
+                Valor = valor;
 
             }
             public string Nome { get; set; }
@@ -99,6 +105,4 @@ namespace CursoOnlineTest
             public PublicoAlvo PublicoAlvo { get; set; }
             public double Valor { get; set; }
         }
-
-    
 }
